@@ -7,8 +7,8 @@ import (
 func main() {
   fmt.Printf("Enter a list of integers:\n")
   var input int
-  slice := make([]int, 0, 10)
-  for len(slice) < 10 {
+  slice := make([]int, 0, 12)
+  for len(slice) < 12 {
     fmt.Scan(&input)
     slice = append(slice, input)
   }

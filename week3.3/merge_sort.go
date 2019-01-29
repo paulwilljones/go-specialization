@@ -13,34 +13,14 @@ func main() {
     slice = append(slice, input)
   }
 
-  half := len(slice) / 2
-  quarter := half / 2
+  c := make(chan []int)
 
-  lChan := make(chan []int)
-  l2Chan := make(chan []int)
-  rChan := make(chan []int)
-  r2Chan := make(chan []int)
+  go MergeSort(slice, c)
+  cData := <- c
 
-  go MergeSort(slice[:quarter], lChan)
-  go MergeSort(slice[quarter:half], l2Chan)
-  go MergeSort(slice[half:half+quarter], rChan)
-  go MergeSort(slice[half+quarter:], r2Chan)
+  close(c)
 
-  l := <- lChan
-  l2 := <- l2Chan
-  r := <- rChan
-  r2 := <- r2Chan
-
-  close(lChan)
-  close(l2Chan)
-  close(rChan)
-  close(r2Chan)
-
-  h1 := Merge(l,l2)
-  h2 := Merge(r, r2)
-  m := Merge(h1, h2)
-
-  fmt.Printf("%v\n%v\n", slice, m)
+  fmt.Printf("%v\n%v\n", slice, cData)
 }
 
 func Merge(l, r []int) []int {
